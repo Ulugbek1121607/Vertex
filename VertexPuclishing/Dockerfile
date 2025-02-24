@@ -1,9 +1,18 @@
-FROM nginx:latest
+# Use official Node.js image
+FROM node:18-alpine
 
-# Statik fayllarni serverga yuklash
-COPY . /usr/share/nginx/html
+# Set working directory
+WORKDIR /app
 
-# Portni ochish
-EXPOSE 80
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy the rest of the code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start the app
+CMD ["node", "server.js"]
